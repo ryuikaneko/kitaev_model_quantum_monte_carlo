@@ -40,7 +40,7 @@ def make_bonds(Lx, Ly, Jx=1.0/3.0, Jy=1.0/3.0, Jz=1.0/3.0):
 def make_hamiltonian(Lx, Ly, bonds):
     """
     Make the full Kitaev Hamiltonian on the Type-II boundary chain of 2*Lx*Ly sites.
-    The 8-site cluster (2x2 unit cells) corresponds to L=4.
+    The 8-site cluster (2x2 unit cells) corresponds to Lx*Ly=4.
     """
     N = 2 * Lx * Ly
     dim = 2**N
