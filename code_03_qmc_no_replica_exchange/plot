@@ -1,0 +1,13 @@
+set xrange [0.01:10]
+set yrange [0.0:0.4]
+set log x
+set grid
+p "dat_specheat"
+pause -1
+pause -1
+
+set yrange [0.001:1]
+set log y
+p "dat_specheat"
+pause -1
+pause -1
