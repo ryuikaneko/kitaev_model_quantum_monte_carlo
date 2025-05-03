@@ -80,18 +80,19 @@ def run_qmc(beta, Lx, Ly, bonds, nbondz, N_thermal=400, N_measure=800):
     E_samples = []
     dEdbeta_samples = []
     for step in range(N_thermal + N_measure):
-        idx = np.random.randint(nbondz)
-        eta[idx] *= -1
-        H_new = make_one_body_hamiltonian(Lx, Ly, bonds, eta)
-        F_new, E_new, dEdbeta_new = compute_fermion_free_energy(H_new, beta)
-        # Metropolis: use log-probability to avoid overflow
-        logP = -beta * (F_new - F)
-        if logP >= 0 or np.log(np.random.rand()) < logP:
-            # accept
-            F, E, dEdbeta = F_new, E_new, dEdbeta_new
-        else:
-            # reject
+        for _ in range(2*Lx*Ly):
+            idx = np.random.randint(nbondz)
             eta[idx] *= -1
+            H_new = make_one_body_hamiltonian(Lx, Ly, bonds, eta)
+            F_new, E_new, dEdbeta_new = compute_fermion_free_energy(H_new, beta)
+            # Metropolis: use log-probability to avoid overflow
+            logP = -beta * (F_new - F)
+            if logP >= 0 or np.log(np.random.rand()) < logP:
+                # accept
+                F, E, dEdbeta = F_new, E_new, dEdbeta_new
+            else:
+                # reject
+                eta[idx] *= -1
         if step >= N_thermal:
             E_samples.append(E)
             dEdbeta_samples.append(dEdbeta)
@@ -103,11 +104,11 @@ def run_qmc(beta, Lx, Ly, bonds, nbondz, N_thermal=400, N_measure=800):
 
 def main():
     parser = argparse.ArgumentParser(
-        description='Exact diagonalization and heat capacity for Kitaev 8-site cluster (Type-II)'
+        description='Heat capacity by QMC for Kitaev 8-site cluster (Type-II)'
     )
     parser.add_argument('--L', type=int, default=2,
                         help='Number of unit cells (use L=2 for 2x2^2-site cluster)')
-    parser.add_argument('--Tmin', type=float, default=0.05, help='Minimum temperature (log scale)')
+    parser.add_argument('--Tmin', type=float, default=0.01, help='Minimum temperature (log scale)')
     parser.add_argument('--Tmax', type=float, default=10.0, help='Maximum temperature (log scale)')
     parser.add_argument('--nT', type=int, default=100, help='Number of temperature points (log-spaced)')
     args = parser.parse_args()
@@ -130,7 +131,7 @@ def main():
     np.savetxt("dat_specheat",np.array([temps,Cv/(2*Lx*Ly)]).T)
     # Plot
     plt.figure()
-    plt.plot(temps, Cv/(2*args.L**2),"-")
+    plt.plot(temps, Cv/(2*Lx*Ly),"-")
     plt.xscale("log")
     plt.xlim(args.Tmin, args.Tmax)
     plt.ylim(0, 0.4)
@@ -141,7 +142,7 @@ def main():
     plt.close()
     #
     plt.figure()
-    plt.plot(temps, Cv/(2*args.L**2),"-")
+    plt.plot(temps, Cv/(2*Lx*Ly),"-")
     plt.xscale("log")
     plt.yscale("log")
     plt.xlim(args.Tmin, args.Tmax)
