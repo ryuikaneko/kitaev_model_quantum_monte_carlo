@@ -1,7 +1,7 @@
 /*
  * Replica Exchange QMC for Kitaev model
  * C implementation with Fortran LAPACK diagonalization
- * Compile: gcc -O3 -std=c99 -I/usr/include -llapack -lblas -lm -o qmc_kitaev qmc_kitaev.c
+ * Compile: gcc -O3 -std=c99 -o qmc_kitaev qmc_kitaev.c -llapack -lblas -lm
  */
 
 #include <stdio.h>
