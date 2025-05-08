@@ -1,0 +1,29 @@
+#set xrange [0.01:10]
+set yrange [0.0:0.4]
+set log x
+set grid
+p \
+"L2/dat_specheat_rex" u 1:2:3 w e, \
+"L3/dat_specheat_rex" u 1:2:3 w e, \
+"L4/dat_specheat_rex" u 1:2:3 w e, \
+"L5/dat_specheat_rex" u 1:2:3 w e, \
+"L6/dat_specheat_rex" u 1:2:3 w e, \
+"L8/dat_specheat_rex" u 1:2:3 w e, \
+"L10/dat_specheat_rex" u 1:2:3 w e, \
+"L12/dat_specheat_rex" u 1:2:3 w e
+pause -1
+pause -1
+
+set yrange [0.001:1]
+set log y
+p \
+"L2/dat_specheat_rex" u 1:2:3 w e, \
+"L3/dat_specheat_rex" u 1:2:3 w e, \
+"L4/dat_specheat_rex" u 1:2:3 w e, \
+"L5/dat_specheat_rex" u 1:2:3 w e, \
+"L6/dat_specheat_rex" u 1:2:3 w e, \
+"L8/dat_specheat_rex" u 1:2:3 w e, \
+"L10/dat_specheat_rex" u 1:2:3 w e, \
+"L12/dat_specheat_rex" u 1:2:3 w e
+pause -1
+pause -1
